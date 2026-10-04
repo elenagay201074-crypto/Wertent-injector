@@ -1,0 +1,188 @@
+if game.CoreGui:FindFirstChild("WertentLOLOL") then
+    game.CoreGui:FindFirstChild("WertentLOLOL"):Destroy()
+end
+local Screen = game:GetObjects("rbxassetid://236309969")[1]
+Screen.Name = "WertentLOLOL"
+Screen.Parent = game.CoreGui
+local Wertent = Screen.RC7
+Wertent.Name = "Wertent"
+local Explorer = Screen.Explorer
+local Save = Screen.Save
+local Open = Screen.Open
+local CurrentTab = "1"
+local Buttonz = Wertent.Buttons
+local NewestTab = 1
+if not isfolder("WertentScripts") then
+    makefolder("WertentScripts")
+end
+
+Explorer.Visible = false
+Open.Visible = false
+Save.Visible = false
+Wertent.Draggable = false
+Open.Draggable = false
+Open.Active = true
+Wertent.Active = true
+
+if Wertent:FindFirstChild("Top") and Wertent.Top:FindFirstChild("Title") then
+    Wertent.Top.Title.Text = "Wertent"
+end
+
+for i,v in next, listfiles("WertentScripts") do
+    local a = Explorer.Buttons.Yes:Clone()
+    a.Parent = Explorer.Buttons
+    a.Visible = true
+    a.Text = v 
+    a.Name = v
+    a.MouseButton1Click:Connect(function()
+    pcall(function()
+        Wertent.TabTexts:FindFirstChild(CurrentTab):FindFirstChild(CurrentTab).Text = readfile(listfiles("WertentScripts")[i])
+    end)
+    Explorer.Visible = false
+    end)
+end
+
+Save.save.MouseButton1Click:Connect(function()
+writefile("WertentScripts/" .. tostring(Save.name.Text) .. ".lua", tostring(Wertent.TabTexts:FindFirstChild(CurrentTab):FindFirstChild(CurrentTab).Text))
+Save.Visible = false
+end)
+
+Buttonz.Execute.MouseButton1Click:Connect(function()
+ local success, result = pcall(function()
+    assert(loadstring(Wertent.TabTexts[CurrentTab][CurrentTab].Text))()
+end)
+
+if not success then
+local Error = Wertent.Console.Error:Clone()
+Error.Text = result
+Error.Parent = Wertent.Console
+Error.Visible = true
+end
+end)
+
+Buttonz.Open.MouseButton1Click:Connect(function()
+    Explorer.Visible = true
+end)
+
+Explorer.Exit.MouseButton1Click:Connect(function()
+    Explorer.Visible = false
+end)
+
+Buttonz.Clear.MouseButton1Click:Connect(function()
+    Wertent.TabTexts:FindFirstChild(CurrentTab):FindFirstChild(CurrentTab).Text = ""
+end)
+
+Buttonz.Inf.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+
+Buttonz.Save.MouseButton1Click:Connect(function()
+    Save.Visible = true
+end)
+
+Save.Close.MouseButton1Click:Connect(function()
+    Save.Visible = false
+end)
+
+Buttonz.Idk.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua"))()
+end)
+
+Buttonz.Dex.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+end)
+
+Buttonz.Attach.MouseButton1Click:Connect(function()
+if messagebox then
+    wait(2)
+    messagebox("Wertent", "Attached", 0)
+end
+end)
+
+Wertent.Tabs:FindFirstChild("1").MouseButton1Click:Connect(function()
+CurrentTab = "1"
+for i,v in next, Wertent.TabTexts:GetChildren() do
+if v.Name == "1" then
+v.Visible = true
+else
+v.Visible = false
+end
+end
+end)
+
+local function ANewTab()
+local Tab = Wertent.Tabs:FindFirstChild("1"):Clone()
+NewestTab = NewestTab + 1
+Tab.Parent = Wertent.Tabs
+Tab.Name = tostring(NewestTab)
+Tab.Text = "(" .. Tab.Name .. ").lua"
+local TextBoxClone = Wertent.TabTexts:FindFirstChild("1"):Clone()
+TextBoxClone.Parent = Wertent.TabTexts
+TextBoxClone.Name = tostring(NewestTab)
+TextBoxClone:FindFirstChild("1").Name = tostring(NewestTab)
+TextBoxClone[tostring(NewestTab)].Text = ""
+Tab.MouseButton1Click:Connect(function()
+CurrentTab = Tab.Name
+for i,v in next, Wertent.TabTexts:GetChildren() do
+if v.Name == Tab.Name then
+v.Visible = true
+else
+v.Visible = false
+end
+end
+end)
+end
+
+local Title = Wertent:FindFirstChild("Title") or (Wertent:FindFirstChild("Top") and Wertent.Top:FindFirstChild("Title"))
+
+Wertent.Top.Frame.Close.MouseButton1Click:Connect(function()
+    Scroll.Visible = false
+    if Title then Title.Visible = false end
+    Wertent.Size = UDim2.new(0, 35, 0, 420)
+    Wertent.Top.Frame.Close.Visible = false
+    BtnMaximize.Visible = true
+    BtnMaximize.Position = UDim2.new(0, 2, 0, 0)
+    BtnMaximize.Size = UDim2.new(0, 31, 0, 35)
+end)
+
+local BtnMinimize = Wertent.Top.Frame.Close
+local BtnMaximize = Instance.new("TextButton", Wertent.Top.Frame)
+BtnMaximize.Name = "BtnMaximize"
+BtnMaximize.Size = UDim2.new(0, 30, 1, 0)
+BtnMaximize.Position = UDim2.new(1, -32, 0, 0)
+BtnMaximize.Text = ">"
+BtnMaximize.TextScaled = true
+BtnMaximize.Font = Enum.Font.SourceSansBold
+BtnMaximize.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+BtnMaximize.TextColor3 = Color3.fromRGB(255, 215, 0)
+BtnMaximize.BorderSizePixel = 0
+BtnMaximize.Visible = false
+local maxStroke = Instance.new("UIStroke", BtnMaximize)
+maxStroke.Color = Color3.fromRGB(255, 215, 0)
+maxStroke.Thickness = 2
+
+local Scroll = Wertent.Tabs
+
+BtnMaximize.MouseButton1Click:Connect(function()
+    Wertent.Size = UDim2.new(0, 320, 0, 420)
+    Scroll.Visible = true
+    if Title then Title.Visible = true end
+    BtnMaximize.Visible = false
+    BtnMinimize.Visible = true
+    BtnMaximize.Position = UDim2.new(1, -32, 0, 0)
+    BtnMaximize.Size = UDim2.new(0, 30, 1, 0)
+end)
+
+Wertent.Tabs.AddNewTab.MouseButton1Click:Connect(function()
+ANewTab()
+Wertent.Tabs.AddNewTab.Parent = Wertent
+wait()
+Wertent.AddNewTab.Parent = Wertent.Tabs
+end)
+
+Open.MouseButton1Click:Connect(function()
+Open.Visible = false
+Wertent.Visible = true
+end)
+
+Wertent.TabTexts:FindFirstChild(CurrentTab):FindFirstChild(CurrentTab).Text = ""
